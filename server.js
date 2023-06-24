@@ -1,26 +1,62 @@
 require('dotenv').config();
 
+const path = require('path');
+const cors = require('cors');
 const express = require('express');
 const app = express();
-const path = require('path');
+const bodyParser = require('body-parser');
+const serversRouter = require('./api/routes/servers');
 const assetsRouter = require('./server/assets-router');
-
-const Pool = require('pg').Pool;
-
-const connection = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-});
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/src', assetsRouter);
 
-app.get('/*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+const port = process.env.PORT;
+
+// Apply middlewares
+app.use(bodyParser.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+// for testing purposes only
+app.get('/api/v1', (req, res) => {
+  res.json({
+    project: 'React and Express Boilerplate',
+    from: 'Vanaldito',
+  });
 });
+
+app.set('trust proxy', 1);
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:8000',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (origin === undefined || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
+
+app.use(serversRouter);
 
 const { PORT = 5000 } = process.env;
 
