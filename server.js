@@ -40,25 +40,25 @@ app.use(
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
-  'http://localhost:8000',
+  'http://localhost:127.0.0.1:5173/',
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (origin === undefined || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (origin === undefined || allowedOrigins.indexOf(origin) !== -1) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
 
 app.use(serversRouter);
 
-const { PORT = 5000 } = process.env;
+const { PORT = 8000 } = process.env;
 
 app.listen(PORT, () => {
   console.log();

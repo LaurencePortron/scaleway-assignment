@@ -67,3 +67,9 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.server-section {
+  display: flex;
+  flex-direction: column;
+}

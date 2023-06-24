@@ -7,6 +7,15 @@ async function getAllServers() {
   return results;
 }
 
+async function addServer(name, type, status) {
+  const results = await executeQuery(
+    `INSERT INTO "servers" ("name", "type", "status") VALUES ($1, $2, $3)`,
+    [name, type, status]
+  );
+  return results;
+}
+
 module.exports = {
+  addServer,
   getAllServers,
 };

@@ -10,6 +10,9 @@ export default defineConfig({
       input: './src/main.jsx',
     },
   },
+  define: {
+    'process.env': {},
+  },
   server: {
     proxy: {
       '/api': {
