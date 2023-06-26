@@ -10,8 +10,8 @@ export default function Breadcrumbs({
   onBackButtonClick,
 }: IBreadcrumbsProps) {
   return (
-    <nav className='flex' onClick={onBackButtonClick}>
-      <ol className='inline-flex items-center space-x-1 md:space-x-3'>
+    <nav className='flex mb-2' onClick={onBackButtonClick}>
+      <ol className='inline-flex items-center space-x-1 md:space-x-1'>
         <p className='inline-flex items-center text-sm hover:underline cursor-pointer'>
           Back
         </p>

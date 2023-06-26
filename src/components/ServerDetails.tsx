@@ -20,6 +20,8 @@ export function ServerDetails() {
         }
         onBackButtonClick={() => navigate('/')}
       />
+      <hr />
+
       {loadingServerDetails ? (
         <Spinner />
       ) : (

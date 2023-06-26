@@ -3,7 +3,7 @@ import { ArrowRight } from 'react-feather';
 export function ServerCard({ server }: any) {
   return (
     <div className='flex flex-wrap w-full'>
-      <div className='flex w-1/2 bg-white shadow-lg rounded-sm p-2 m-2'>
+      <div className='flex w-1/2 bg-white shadow-lg rounded-sm p-2 my-2'>
         <div className='w-full flex flex-col text-start'>
           <p className='text-zinc-500 text-sm'>Name</p>
           <p className='text-black text-base'>{server.name}</p>

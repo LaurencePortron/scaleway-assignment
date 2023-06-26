@@ -3,8 +3,10 @@ import { useAPI } from '../API/hook';
 import React, { useState } from 'react';
 import Modal from '../designsystem/Modal';
 import Spinner from '../designsystem/Spinner';
-import { ServerCard } from '../components/ServerCard';
 import { useNavigate } from 'react-router-dom';
+import { ServerCard } from '../components/ServerCard';
+import { ArrowBottomLeftIcon, CaretSortIcon } from '@radix-ui/react-icons';
+import { AlertBanner } from '../designsystem/AlertBanner';
 
 export interface IServer {
   id: string;
@@ -36,6 +38,14 @@ export function ServersList(props: any) {
     setType(event.target.value);
   };
 
+  const hasEmptyValues = name === '' || type === '' || status === '';
+
+  const clearStates = () => {
+    setName('');
+    setType('');
+    setStatus('');
+  };
+
   const onAddServer = async () => {
     try {
       const body = {
@@ -43,16 +53,20 @@ export function ServersList(props: any) {
         type,
         status,
       };
-      await API.post('/api/server', body).then((response) => {
-        if (response) {
-          refreshServers();
-          setName('');
-          setType('');
-          setStatus('');
-        } else {
-          setHasError(true);
-        }
-      });
+      if (!hasEmptyValues) {
+        await API.post('/api/server', body).then((response) => {
+          if (response) {
+            refreshServers();
+            setName('');
+            setType('');
+            setStatus('');
+          } else {
+            setHasError(true);
+          }
+        });
+      } else {
+        setHasError(true);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -65,10 +79,12 @@ export function ServersList(props: any) {
           <p className='text-base font-bold'> All of your Servers</p>
         </div>
         <Modal
-          title='Add a new server'
           serverStatus={status}
           onSubmit={onAddServer}
           setServerType={setType}
+          title='Add a new server'
+          clearStates={clearStates}
+          hasEmptyValues={hasEmptyValues}
           handleServerType={handleServerType}
           handleServerName={handleServerName}
           handleServerStatus={handleServerStatus}
@@ -85,16 +101,27 @@ export function ServersList(props: any) {
       {loadingServers ? (
         <Spinner />
       ) : servers && servers?.length > 0 ? (
-        servers?.map((server) => {
-          return (
-            <div
-              key={server.id}
-              onClick={() => navigate(`/server/${server.id}`)}
-            >
-              <ServerCard server={server} />
+        <div>
+          {hasError ? (
+            <div className='w-full mb-2'>
+              <AlertBanner
+                title='An error happened'
+                closeError={() => setHasError(false)}
+                description='The server could not be added'
+              />
             </div>
-          );
-        })
+          ) : null}
+          {servers?.map((server) => {
+            return (
+              <div
+                key={server.id}
+                onClick={() => navigate(`/server/${server.id}`)}
+              >
+                <ServerCard server={server} />
+              </div>
+            );
+          })}
+        </div>
       ) : (
         <p className='text-base mt-4'>You don't have any servers yet</p>
       )}

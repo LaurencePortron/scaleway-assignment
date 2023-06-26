@@ -9,6 +9,8 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 interface IDialogProps {
   title: string;
   serverStatus: string;
+  hasEmptyValues: boolean;
+  clearStates: () => void;
   onSubmit: () => Promise<void>;
   triggerPlaceholder: string | JSX.Element;
   handleServerStatus: (value: string) => void;
@@ -30,16 +32,13 @@ const serverStatusOptions = [
   { id: 4, status: 'stopped' },
 ];
 
-// you need to clear all states when you close the modal
-// you need to add error banners when request failed
-// handle errors when not entering all inputs
-// warning when you close without saving but have at least 1 input that has a value
-
 const Dialog = ({
   title,
   onSubmit,
+  clearStates,
   serverStatus,
   setServerType,
+  hasEmptyValues,
   handleServerName,
   triggerPlaceholder,
   handleServerStatus,
@@ -86,14 +85,6 @@ const Dialog = ({
                 'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
               )}
             >
-              {/* {hasRequestError && (
-                <div className='mb-2'>
-                  <AlertBanner
-                    title='An error happened'
-                    description='This event could not be added'
-                  />
-                </div>
-              )} */}
               <DialogPrimitive.Title className='text-sm font-medium mt-4 mb-4'>
                 {title}
               </DialogPrimitive.Title>
@@ -132,19 +123,16 @@ const Dialog = ({
 
               <div className='mt-4 flex justify-end space-x-4'>
                 <DialogPrimitive.Close
+                  disabled={hasEmptyValues}
                   onClick={onSubmit}
-                  className={cx(
-                    'inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium',
-                    'bg-primaryButton text-white hover:bg-primaryButton/80  dark:text-gray-100 ',
-                    'border border-transparent',
-                    'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
-                  )}
+                  className={`inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium bg-primaryButton text-white hover:bg-primaryButton/80  dark:text-gray-100  border border-transparent focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75`}
                 >
                   Add
                 </DialogPrimitive.Close>
               </div>
 
               <DialogPrimitive.Close
+                onClick={clearStates}
                 className={cx(
                   'absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1',
                   'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
