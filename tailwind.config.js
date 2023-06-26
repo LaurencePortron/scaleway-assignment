@@ -1,0 +1,19 @@
+module.exports = {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        pink: '#BC6BA0',
+        violet: '#6379B0',
+        primary: '#FFFFFF',
+        lightGray: '#B6C3DC',
+        lightBlue: '#70A0D6',
+        lightPink: '#9464A5',
+        secondary: '#f2f2f2',
+        primaryGray: '#A1A6B3',
+        primaryButton: '#3252CF',
+      },
+    },
+  },
+  plugins: [],
+};

@@ -4,30 +4,13 @@ const path = require('path');
 const cors = require('cors');
 const express = require('express');
 const app = express();
+
 const bodyParser = require('body-parser');
 const serversRouter = require('./api/routes/servers');
 const assetsRouter = require('./server/assets-router');
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/src', assetsRouter);
-
-const port = process.env.PORT;
-
-// Apply middlewares
-app.use(bodyParser.json());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
-// for testing purposes only
-app.get('/api/v1', (req, res) => {
-  res.json({
-    project: 'React and Express Boilerplate',
-    from: 'Vanaldito',
-  });
-});
 
 app.set('trust proxy', 1);
 app.use(express.json());
@@ -36,6 +19,9 @@ app.use(
     extended: true,
   })
 );
+app.use(serversRouter);
+
+const port = process.env.PORT;
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -55,8 +41,6 @@ const allowedOrigins = [
 //     credentials: true,
 //   })
 // );
-
-app.use(serversRouter);
 
 const { PORT = 8000 } = process.env;
 
