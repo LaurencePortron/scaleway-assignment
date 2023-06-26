@@ -4,17 +4,16 @@ const API = {
 };
 
 async function apiGet(path: string) {
-  const response = await fetch(path, {});
+  const response = await fetch(path, { mode: 'no-cors' });
   const data = await response.json();
-  if (response.ok) {
+  if (response.status === 200) {
     return { data: data.rows };
   }
 }
 
 async function apiPost(path: string, body: any) {
-  const url = path;
-  const res = await fetch(url, {
-    mode: 'no-cors',
+  const res = await fetch(path, {
+    credentials: 'include',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

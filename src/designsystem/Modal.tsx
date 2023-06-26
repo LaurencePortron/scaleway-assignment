@@ -7,7 +7,7 @@ import { Cross1Icon } from '@radix-ui/react-icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 interface IDialogProps {
-  description?: string;
+  title: string;
   serverStatus: string;
   onSubmit: () => Promise<void>;
   triggerPlaceholder: string | JSX.Element;
@@ -36,8 +36,8 @@ const serverStatusOptions = [
 // warning when you close without saving but have at least 1 input that has a value
 
 const Dialog = ({
+  title,
   onSubmit,
-  description,
   serverStatus,
   setServerType,
   handleServerName,
@@ -82,7 +82,7 @@ const Dialog = ({
                 'fixed z-50',
                 'md:w-96 rounded-lg p-6',
                 'top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]',
-                'bg-primary border shadow-xl',
+                'bg-primaryBlack shadow-xl',
                 'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
               )}
             >
@@ -95,8 +95,9 @@ const Dialog = ({
                 </div>
               )} */}
               <DialogPrimitive.Title className='text-sm font-medium mt-4 mb-4'>
-                <Input onInputChange={handleServerName} placeholder='name' />
+                {title}
               </DialogPrimitive.Title>
+              <Input onInputChange={handleServerName} placeholder='name' />
               <div className='flex items-center space-x-2 mt-4 mb-4'>
                 {serverTypeOptions.map((option) => {
                   return (
@@ -116,12 +117,6 @@ const Dialog = ({
                   );
                 })}
               </div>
-
-              {description && (
-                <DialogPrimitive.Description className='mt-2 text-sm font-normal text-gray-400'>
-                  {description}
-                </DialogPrimitive.Description>
-              )}
 
               <div className='flex flex-col space-y-4'>
                 <div className='flex items-center space-x-2'>

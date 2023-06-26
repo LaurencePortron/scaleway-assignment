@@ -1,4 +1,4 @@
-const { executeQuery } = require('../../dbConnection');
+const { executeQuery, connection } = require('../../dbConnection');
 
 // function to get all servers
 async function getAllServers() {
@@ -8,15 +8,25 @@ async function getAllServers() {
 
 // function to add a server
 async function addServer(name, type, status) {
-  console.log('function', name, type, status);
-  const results = await executeQuery(
-    'INSERT INTO servers (name, type, status) VALUES ($1, $2, $3)',
-    [name, type, status]
-  );
+  const query = {
+    text: 'INSERT INTO servers(name, type, status) VALUES($1, $2, $3)',
+    values: [name, type, status],
+  };
+  const results = await connection.query(query);
+
+  return results;
+}
+
+// function to get one server
+async function getServerById(id) {
+  const results = await executeQuery('SELECT * FROM servers WHERE id = $1', [
+    id,
+  ]);
   return results;
 }
 
 module.exports = {
   addServer,
+  getServerById,
   getAllServers,
 };

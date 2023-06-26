@@ -4,10 +4,11 @@ export interface ISpinnerProps {
 
 export default function Spinner({ placeholder }: ISpinnerProps) {
   return (
-    <div className='absolute inset-0 h-screen flex justify-center items-center'>
+    <div className='absolute inset-0 h-screen flex flex-col justify-center items-center space-y-2'>
+      <p className='text-sm'>Loading data..</p>
       <div role='status'>
         <svg
-          className='inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primary-blue'
+          className='inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primaryButton'
           viewBox='0 0 100 101'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'

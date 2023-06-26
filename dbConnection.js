@@ -17,9 +17,9 @@ connection.connect((err) => {
   }
 });
 
-async function executeQuery(query) {
+async function executeQuery(query, values) {
   return new Promise((resolve, reject) => {
-    connection.query(query, (err, results) => {
+    connection.query(query, values, (err, results) => {
       if (err) {
         reject(err);
       } else {

@@ -21,8 +21,14 @@ export function useAPI<T>(path: string): [T | undefined, boolean, () => void] {
     );
   };
 
+  const handleRender = () => {
+    setTimeout(() => {
+      refresh();
+    }, 1000);
+  };
+
   useEffect(() => {
-    refresh();
+    handleRender();
   }, [path]);
 
   return [result, loading, refresh];
