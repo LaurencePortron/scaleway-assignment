@@ -3,7 +3,7 @@ import Modal from '../designsystem/Modal';
 import API from '../hooks/API/APIFunctions';
 import { ServersTable } from './ServersTable';
 import Spinner from '../designsystem/Spinner';
-import { useAPI } from '../hooks/API/fetchHook';
+import { useAPI } from '../hooks/API/fetchData';
 import { AlertBanner } from '../designsystem/AlertBanner';
 
 export interface IServer {

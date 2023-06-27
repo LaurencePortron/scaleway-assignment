@@ -1,9 +1,9 @@
-import { useAPI } from '../hooks/API/fetchHook';
-import { useParams } from 'react-router-dom';
 import { IServer } from './Home';
-import Breadcrumbs from '../designsystem/Breadcrumbs';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Spinner from '../designsystem/Spinner';
+import { useNavigate } from 'react-router-dom';
+import { useAPI } from '../hooks/API/fetchData';
+import Breadcrumbs from '../designsystem/Breadcrumbs';
 
 export default function ServerDetails() {
   let { id } = useParams();

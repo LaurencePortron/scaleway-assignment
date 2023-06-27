@@ -1,6 +1,6 @@
-import TableHeader from './TableHeader';
-import { useSortable } from '../hooks/client/useSortable';
 import TableBody from './TableBody';
+import TableHeader from './TableHeader';
+import { useSortable } from '../hooks/useSortable';
 
 export function ServersTable({ data, columns }: any) {
   const [tableData, handleSorting] = useSortable(data);

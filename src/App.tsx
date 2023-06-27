@@ -6,14 +6,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/server/:id' element={<ServerDetails />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/server/:id' element={<ServerDetails />} />
+      </Routes>
+    </Router>
   );
 }
 
