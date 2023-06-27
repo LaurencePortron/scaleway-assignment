@@ -1,11 +1,9 @@
-import API from '../API/API';
-import { useAPI } from '../API/hook';
 import React, { useState } from 'react';
 import Modal from '../designsystem/Modal';
+import API from '../hooks/API/APIFunctions';
+import { ServersTable } from './ServersTable';
 import Spinner from '../designsystem/Spinner';
-import { useNavigate } from 'react-router-dom';
-import { ServerCard } from '../components/ServerCard';
-import { ArrowBottomLeftIcon, CaretSortIcon } from '@radix-ui/react-icons';
+import { useAPI } from '../hooks/API/fetchHook';
 import { AlertBanner } from '../designsystem/AlertBanner';
 
 export interface IServer {
@@ -15,7 +13,13 @@ export interface IServer {
   status: string;
 }
 
-export function ServersList(props: any) {
+const columns = [
+  { label: 'Name', accessor: 'name', sortable: true, sortbyOrder: 'desc' },
+  { label: 'Type', accessor: 'type', sortable: true, sortbyOrder: 'desc' },
+  { label: 'Status', accessor: 'status', sortable: true, sortbyOrder: 'desc' },
+];
+
+export default function Home() {
   const [name, setName] = useState<string>('');
   const [type, setType] = useState<string>('');
   const [status, setStatus] = useState<string>('');
@@ -23,8 +27,6 @@ export function ServersList(props: any) {
 
   const [servers, loadingServers, refreshServers] =
     useAPI<IServer[]>('/api/servers');
-
-  const navigate = useNavigate();
 
   const handleServerName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -111,16 +113,9 @@ export function ServersList(props: any) {
               />
             </div>
           ) : null}
-          {servers?.map((server) => {
-            return (
-              <div
-                key={server.id}
-                onClick={() => navigate(`/server/${server.id}`)}
-              >
-                <ServerCard server={server} />
-              </div>
-            );
-          })}
+          <div className='mt-4'>
+            <ServersTable data={servers} columns={columns} />
+          </div>
         </div>
       ) : (
         <p className='text-base mt-4'>You don't have any servers yet</p>

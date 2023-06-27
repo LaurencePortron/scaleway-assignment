@@ -1,4 +1,4 @@
-import API from './API';
+import API from './APIFunctions';
 import { useState, useEffect } from 'react';
 
 export function useAPI<T>(path: string): [T | undefined, boolean, () => void] {
