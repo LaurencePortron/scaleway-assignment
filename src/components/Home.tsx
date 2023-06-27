@@ -91,7 +91,10 @@ export default function Home() {
           handleServerName={handleServerName}
           handleServerStatus={handleServerStatus}
           triggerPlaceholder={
-            <div className='flex items-center space-x-2 cursor-pointer rounded w-max'>
+            <div
+              data-testid={'addServer-button'}
+              className='flex items-center space-x-2 cursor-pointer rounded w-max'
+            >
               <button className='px-2 py-1 bg-primaryButton hover:bg-primaryButton/80 rounded cursor-pointer'>
                 <p className='text-sm text-primary'>+ add</p>
               </button>
