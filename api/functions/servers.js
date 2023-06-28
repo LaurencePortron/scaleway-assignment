@@ -1,23 +1,13 @@
-import {
-  TCreateServerResponse,
-  TFetchServerResponse,
-  TServer,
-  TServersListResponse,
-} from '../types';
 const { executeQuery, connection } = require('../../dbConnection');
 
 // function to get all servers
-async function getAllServers(): Promise<TServersListResponse[]> {
+async function getAllServers() {
   const results = await executeQuery('SELECT * FROM servers');
   return results;
 }
 
 // function to add a server
-async function addServer(
-  name: string,
-  type: string,
-  status: string
-): Promise<TCreateServerResponse> {
+async function addServer(name, type, status) {
   const query = {
     text: 'INSERT INTO servers(name, type, status) VALUES($1, $2, $3)',
     values: [name, type, status],
@@ -28,7 +18,7 @@ async function addServer(
 }
 
 // function to get one server
-async function getServerById(id: number): Promise<TFetchServerResponse> {
+async function getServerById() {
   const results = await executeQuery('SELECT * FROM servers WHERE id = $1', [
     id,
   ]);

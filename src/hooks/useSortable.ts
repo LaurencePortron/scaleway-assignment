@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IServer } from '../components/Home';
 
-type ISortDirection = 'asc' | 'desc';
+export type ISortDirection = 'asc' | 'desc';
 
 interface ISortConfig {
   key: keyof IServer | null;

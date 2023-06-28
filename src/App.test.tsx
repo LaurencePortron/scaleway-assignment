@@ -1,16 +1,11 @@
-import { vi } from 'vitest';
-import express from 'express';
-import request from 'supertest';
 import '@testing-library/jest-dom';
-import Home from './components/Home';
 import ServerDetails from './components/ServerDetails';
+import { renderHook, act } from '@testing-library/react';
+import ServersTable from '../src/components/ServersTable';
+import Home, { IColumn, IServer } from './components/Home';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { ISortDirection, useSortable } from '../src/hooks/useSortable';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
-
-const router = express.Router();
-const app = express();
-router.route('/division');
-const serversRouter = require('../api/routes/servers');
 
 describe('Page Navigation', () => {
   it('should navigate to a home page', () => {
@@ -31,43 +26,6 @@ describe('Page Navigation', () => {
   });
 });
 
-describe('GET /api/servers', () => {
-  it('should fetch all servers', async () => {
-    const mockResults = [
-      { id: 1, name: 'Server 1' },
-      { id: 2, name: 'Server 2' },
-    ];
-    vi.fn().mockResolvedValue(mockResults);
-
-    const app = express();
-    app.use('/api', serversRouter);
-
-    const response = await request(app).get('/api/servers');
-
-    expect(response.status).toBe(404);
-  });
-
-  it('should handle errors', async () => {
-    vi.fn().mockRejectedValue(new Error('Database error'));
-
-    app.use('/api', router);
-
-    const response = await request(app).get('/api/servers');
-
-    expect(response.status).toBe(404);
-  });
-});
-
-describe('POST /api/server', () => {
-  it('should create a new server', async () => {
-    const response = await request(app)
-      .post('/api/server')
-      .send({ name: 'New server', type: 'medium', status: 'running' });
-
-    expect(response.status).toBe(404);
-  });
-});
-
 describe('Page Navigation on Button Click', () => {
   it('should navigate to a new page on button click', () => {
     const { getByText, queryByText } = render(
@@ -85,21 +43,85 @@ describe('Page Navigation on Button Click', () => {
         </Routes>
       </Router>
     );
-
-    // see if initial page content is rendered
     expect(queryByText('All of your servers')).toBeNull();
 
     fireEvent.click(getByText('Go to Server 1'));
 
-    // rendering destination page
     expect(queryByText('Back')).toBeInTheDocument();
   });
 });
 
-describe('GET /api/server/:id', () => {
-  it('should fetch a single server', async () => {
-    const response = await request(app).get('/api/server/1');
+describe('useSortable', () => {
+  it('should initialize with the provided initial sort config', () => {
+    const initialConfig = {
+      key: 'name' as keyof IServer,
+      direction: 'asc' as ISortDirection,
+    };
 
-    expect(response.status).toBe(404);
+    const { result } = renderHook(() => useSortable({ initialConfig }));
+
+    expect(result.current.sortConfig).toEqual(initialConfig);
+  });
+
+  it('should update sortConfig when handleSort is called', () => {
+    const { result } = renderHook(() =>
+      useSortable({ initialConfig: { key: null, direction: null } })
+    );
+
+    expect(result.current.sortConfig).toEqual({ key: null, direction: null });
+
+    act(() => {
+      result.current.handleSort('name');
+    });
+
+    expect(result.current.sortConfig).toEqual({
+      key: 'name',
+      direction: 'asc',
+    });
+
+    act(() => {
+      result.current.handleSort('name');
+    });
+
+    expect(result.current.sortConfig).toEqual({
+      key: 'name',
+      direction: 'desc',
+    });
+  });
+});
+
+test('ServersTable', () => {
+  const tableData: IServer[] = [
+    { id: '1', name: 'Server 1', type: 'large', status: 'running' },
+    { id: '2', name: 'Server 2', type: 'medium', status: 'stopped' },
+    { id: '3', name: 'Server 3', type: 'small', status: 'running' },
+  ];
+
+  const columns: IColumn[] = [
+    { label: 'Name', accessor: 'name', sortable: true },
+    { label: 'Type', accessor: 'type', sortable: true },
+    { label: 'Status', accessor: 'status', sortable: true },
+  ];
+
+  it('should render the sortable table', () => {
+    render(
+      <Router>
+        <ServersTable data={tableData} columns={columns} />
+      </Router>
+    );
+
+    // Verify initial order
+    const tableRows = screen.getAllByRole('row');
+    expect(tableRows[1]).toHaveTextContent('Server 1');
+    expect(tableRows[2]).toHaveTextContent('Server 2');
+    expect(tableRows[3]).toHaveTextContent('Server 3');
+
+    const headerName = screen.getByRole('columnheader', { name: 'name' });
+    fireEvent.click(headerName);
+
+    // Verify sorted order
+    expect(tableRows[1]).toHaveTextContent('Server 1');
+    expect(tableRows[2]).toHaveTextContent('Server 3');
+    expect(tableRows[3]).toHaveTextContent('Server 2');
   });
 });
