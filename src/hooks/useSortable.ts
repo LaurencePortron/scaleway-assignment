@@ -1,28 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { IServer } from '../components/Home';
 
-export const useSortable = (data: any) => {
-  const [tableData, setTableData] = useState(data);
+type ISortDirection = 'asc' | 'desc';
 
-  // depending on the selected field and the sort order we return a new array
-  const handleSorting = (selectedSortField: string, sortOrder: string) => {
-    if (selectedSortField) {
-      const sorted = [...tableData].sort((firstElement, secondElement) => {
-        return (
-          firstElement[selectedSortField]
-            .toString()
-            .localeCompare(secondElement[selectedSortField].toString(), {
-              numeric: true,
-            }) * (sortOrder === 'asc' ? 1 : -1)
-        );
-      });
+interface ISortConfig {
+  key: keyof IServer | null;
+  direction: ISortDirection | null;
+}
 
-      setTableData(sorted);
+interface IUseSortableConfig {
+  initialConfig: ISortConfig;
+}
+
+export const useSortable = ({ initialConfig }: IUseSortableConfig) => {
+  const [sortConfig, setSortConfig] = useState<ISortConfig>(initialConfig);
+
+  const handleSort = (column: keyof IServer) => {
+    let direction: ISortDirection = 'asc';
+    if (sortConfig.key === column && sortConfig.direction === 'asc') {
+      direction = 'desc';
     }
+    setSortConfig({ key: column, direction });
   };
 
-  useEffect(() => {
-    setTableData(data);
-  }, [data]);
-
-  return [tableData, handleSorting];
+  return { sortConfig, handleSort };
 };

@@ -17,6 +17,9 @@ connection.connect((err) => {
   }
 });
 
+// function creating a new promise to handle the asynchronous operation
+// then call the connection.query method with the provided query and values
+
 async function executeQuery(query, values) {
   return new Promise((resolve, reject) => {
     connection.query(query, values, (err, results) => {

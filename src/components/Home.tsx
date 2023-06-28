@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../designsystem/Modal';
 import API from '../hooks/API/APIFunctions';
-import { ServersTable } from './ServersTable';
+import ServersTable from './ServersTable';
 import Spinner from '../designsystem/Spinner';
 import { useAPI } from '../hooks/API/fetchData';
 import { AlertBanner } from '../designsystem/AlertBanner';
@@ -13,10 +13,16 @@ export interface IServer {
   status: string;
 }
 
-const columns = [
-  { label: 'Name', accessor: 'name', sortable: true, sortbyOrder: 'desc' },
-  { label: 'Type', accessor: 'type', sortable: true, sortbyOrder: 'desc' },
-  { label: 'Status', accessor: 'status', sortable: true, sortbyOrder: 'desc' },
+export interface IColumn {
+  label: string;
+  accessor: keyof IServer;
+  sortable: boolean;
+}
+
+const columns: IColumn[] = [
+  { label: 'Name', accessor: 'name', sortable: true },
+  { label: 'Type', accessor: 'type', sortable: true },
+  { label: 'Status', accessor: 'status', sortable: true },
 ];
 
 export default function Home() {
