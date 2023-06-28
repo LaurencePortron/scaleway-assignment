@@ -27,7 +27,7 @@ export default function ServerDetails() {
         <Spinner />
       ) : (
         <div>
-          <p className='text-white text-base mt-4 font-bold'>
+          <p className='text-white text-base mt-4 font-'>
             The server {serverDetails && serverDetails[0]?.name} is currently{' '}
             {serverDetails && serverDetails[0]?.status}
           </p>

@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 const express = require('express');
 const router = express.Router();
 
@@ -8,7 +10,7 @@ const {
 } = require('../functions/servers');
 
 // fetch all servers
-router.get('/api/servers', async (req, res) => {
+router.get('/api/servers', async (req: Request, res: Response) => {
   const allServers = req.body;
   try {
     const results = await getAllServers(allServers);
@@ -20,7 +22,7 @@ router.get('/api/servers', async (req, res) => {
 });
 
 // add a server
-router.post('/api/server', async (req, res) => {
+router.post('/api/server', async (req: Request, res: Response) => {
   const { name, type, status } = req.body;
   try {
     const results = await addServer(name, type, status);
@@ -32,7 +34,7 @@ router.post('/api/server', async (req, res) => {
 });
 
 // get one server by id
-router.get('/api/server/:id', async (req, res) => {
+router.get('/api/server/:id', async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     const results = await getServerById(id);
