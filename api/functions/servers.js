@@ -18,11 +18,11 @@ async function addServer(name, type, status) {
 }
 
 // function to get one server
-async function getServerById() {
+async function getServerById(id) {
   const results = await executeQuery('SELECT * FROM servers WHERE id = $1', [
     id,
   ]);
-  return results[0] || null;
+  return results;
 }
 
 module.exports = {
