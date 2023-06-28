@@ -59,7 +59,7 @@ function ServersTable({ data, columns }: ISortableTableProps) {
             <tr
               key={index}
               onClick={() => navigate(`/server/${row.id}`)}
-              className='grid grid-cols-3 items-center bg-black/50 hover:bg-slate-800 border-b border-gray-700 cursor-pointer'
+              className='grid grid-cols-3 items-center bg-black/50 hover:bg-black/30 border-b border-gray-700 cursor-pointer'
             >
               {columns.map((column) => {
                 return (

@@ -6,7 +6,8 @@ import React, { Fragment, useState } from 'react';
 import { Cross1Icon } from '@radix-ui/react-icons';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
-interface IDialogProps {
+interface IModalProps {
+  type: string;
   title: string;
   serverStatus: string;
   hasEmptyValues: boolean;
@@ -19,20 +20,20 @@ interface IDialogProps {
   handleServerType: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const serverTypeOptions = [
-  { id: 1, type: 'small' },
-  { id: 2, type: 'medium' },
-  { id: 3, type: 'large' },
-];
+interface IServerStatus {
+  id: number;
+  status: 'starting' | 'running' | 'stopping' | 'stopped';
+}
 
-const serverStatusOptions = [
+const serverStatusOptions: IServerStatus[] = [
   { id: 1, status: 'starting' },
   { id: 2, status: 'running' },
   { id: 3, status: 'stopping' },
   { id: 4, status: 'stopped' },
 ];
 
-const Dialog = ({
+const Modal = ({
+  type,
   title,
   onSubmit,
   clearStates,
@@ -42,7 +43,7 @@ const Dialog = ({
   handleServerName,
   triggerPlaceholder,
   handleServerStatus,
-}: IDialogProps) => {
+}: IModalProps) => {
   let [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -79,67 +80,86 @@ const Dialog = ({
               forceMount
               className={cx(
                 'fixed z-50',
-                'md:w-96 rounded-lg p-6',
+                'md:w-1/3 rounded-lg p-6',
                 'top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]',
                 'bg-primaryBlack shadow-xl',
-                'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
+                'focus:outline-none focus-visible:ring focus-visible:ring-primaryBlue focus-visible:ring-opacity-75'
               )}
             >
-              <DialogPrimitive.Title className='text-sm font-medium mt-4 mb-4'>
-                {title}
-              </DialogPrimitive.Title>
-              <Input onInputChange={handleServerName} placeholder='name' />
-              <div className='flex items-center space-x-2 mt-4 mb-4'>
-                {serverTypeOptions.map((option) => {
-                  return (
-                    <div
-                      key={option.id}
-                      className={`w-max py-1 px-2 rounded-sm cursor-pointer ${
-                        option.type === 'small'
-                          ? 'bg-lightBlue'
-                          : option.type === 'medium'
-                          ? 'bg-lightBlue/70'
-                          : 'bg-violet/70'
-                      }`}
-                      onClick={() => setServerType(option.type)}
-                    >
-                      <p className='text-xs text-primary'>{option.type}</p>
-                    </div>
-                  );
-                })}
-              </div>
+              <DialogPrimitive.Close
+                onClick={clearStates}
+                className={cx(
+                  'flex items-center justify-between w-full rounded-full p-1',
+                  'focus:outline-none focus-visible:ring focus-visible:ring-primaryBlue focus-visible:ring-opacity-75'
+                )}
+              >
+                <DialogPrimitive.Title className='text-base font-medium'>
+                  {title}
+                </DialogPrimitive.Title>
+                <Cross1Icon className='h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-400' />
+              </DialogPrimitive.Close>
 
-              <div className='flex flex-col space-y-4'>
-                <div className='flex items-center space-x-2'>
+              <div className='flex flex-col mt-4 mb-4 space-y-2'>
+                <label className='text-sm'>Server name:</label>
+                <Input onInputChange={handleServerName} placeholder='name' />
+              </div>
+              <div className='flex flex-col mt-4 mb-4 space-y-2'>
+                <label className='text-sm'>Select a server type:</label>
+                <div className='flex space-x-2 '>
                   <div className='flex items-center space-x-2'>
-                    <Select
-                      placeholder={serverStatus ? serverStatus : 'status'}
-                      onChange={handleServerStatus}
-                      serverStatusOptions={serverStatusOptions}
-                    />
+                    <div
+                      className={`py-1 px-2 rounded-sm cursor-pointer ${
+                        type === 'small'
+                          ? 'bg-lightBlue border border-white/50'
+                          : 'bg-lightBlue/50 border border-transparent'
+                      }`}
+                      onClick={() => setServerType('small')}
+                    >
+                      <p className='text-xs text-primary'>small</p>
+                    </div>
+                    <div
+                      className={`py-1 px-2 rounded-sm cursor-pointer ${
+                        type === 'medium'
+                          ? 'bg-primaryBlue border border-white/50'
+                          : 'bg-primaryBlue/30 border border-transparent'
+                      }`}
+                      onClick={() => setServerType('medium')}
+                    >
+                      <p className='text-xs text-primary'>medium</p>
+                    </div>
+
+                    <div
+                      className={`py-1 px-2 rounded-sm cursor-pointer ${
+                        type === 'large'
+                          ? 'bg-violet border border-white/50'
+                          : 'bg-violet/50 border border-transparent'
+                      }`}
+                      onClick={() => setServerType('large')}
+                    >
+                      <p className='text-xs text-primary'>large</p>
+                    </div>
                   </div>
                 </div>
+              </div>
+
+              <div className='flex flex-col mt-4 mb-4 space-y-2 w-1/2'>
+                <label className='text-sm'>Select a server status:</label>
+                <Select
+                  placeholder={serverStatus ? serverStatus : 'status'}
+                  onChange={handleServerStatus}
+                  serverStatusOptions={serverStatusOptions}
+                />
               </div>
 
               <div className='mt-4 flex justify-end space-x-4'>
                 <DialogPrimitive.Close
                   disabled={hasEmptyValues}
                   onClick={onSubmit}
-                  className={`inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium bg-primaryButton text-white hover:bg-primaryButton/80  dark:text-gray-100  border border-transparent focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75`}
+                  className={`px-2 py-1 bg-primaryBlue hover:bg-primaryBlue/80 rounded cursor-pointer`}
                 >
-                  Add
+                  save
                 </DialogPrimitive.Close>
               </div>
-
-              <DialogPrimitive.Close
-                onClick={clearStates}
-                className={cx(
-                  'absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1',
-                  'focus:outline-none focus-visible:ring focus-visible:ring-primaryButton focus-visible:ring-opacity-75'
-                )}
-              >
-                <Cross1Icon className='h-4 w-4 text-gray-500 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-400' />
-              </DialogPrimitive.Close>
             </DialogPrimitive.Content>
           </Transition.Child>
         </Transition.Root>
@@ -148,4 +168,4 @@ const Dialog = ({
   );
 };
 
-export default Dialog;
+export default Modal;

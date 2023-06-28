@@ -14,7 +14,7 @@ export function AlertBanner({
   return (
     <div className='pt-2 w-1/2'>
       <div
-        className='flex items-center justify-between bg-primaryButton/20 border border-primaryButton text-primaryButton px-4 py-1 rounded relative'
+        className='flex items-center justify-between bg-primaryBlue/20 border border-primaryBlue text-primaryBlue px-4 py-1 rounded relative'
         role='alert'
       >
         <div className='flex space-x-2'>

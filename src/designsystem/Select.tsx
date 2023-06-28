@@ -22,7 +22,7 @@ export default function Select({
       {({ open }) => (
         <>
           <div
-            className='bg-secondary p-1 placeholder:text-sm border border-transparent focus-visible:border-b-primaryButton
+            className='bg-secondary rounded-sm p-1 placeholder:text-sm border border-transparent focus-visible:border-b-primaryBlue
             focus:outline-none focus-visible:ring-1 focus-visible:ring-transparent focus-visible:ring-opacity-50'
           >
             <Listbox.Button className='w-20'>

@@ -12,7 +12,7 @@ module.exports = {
         lightPink: '#9464A5',
         secondary: '#f2f2f2',
         primaryGray: '#A1A6B3',
-        primaryButton: '#3252CF',
+        primaryBlue: '#3252CF',
       },
     },
   },

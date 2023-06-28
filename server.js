@@ -1,11 +1,9 @@
 require('dotenv').config();
 
 const path = require('path');
-const cors = require('cors');
 const express = require('express');
 const app = express();
 
-const bodyParser = require('body-parser');
 const serversRouter = require('./api/routes/servers');
 const assetsRouter = require('./server/assets-router');
 
@@ -20,27 +18,6 @@ app.use(
   })
 );
 app.use(serversRouter);
-
-const port = process.env.PORT;
-
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:127.0.0.1:5173/',
-];
-
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (origin === undefined || allowedOrigins.indexOf(origin) !== -1) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error('Not allowed by CORS'));
-//       }
-//     },
-//     credentials: true,
-//   })
-// );
 
 const { PORT = 8000 } = process.env;
 

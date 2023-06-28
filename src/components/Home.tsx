@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '../designsystem/Modal';
-import API from '../hooks/API/APIFunctions';
 import ServersTable from './ServersTable';
+import API from '../hooks/API/APIFunctions';
 import Spinner from '../designsystem/Spinner';
 import { useAPI } from '../hooks/API/fetchData';
 import { AlertBanner } from '../designsystem/AlertBanner';
@@ -87,6 +87,7 @@ export default function Home() {
           <p className='text-base font-bold'> All of your Servers</p>
         </div>
         <Modal
+          type={type}
           serverStatus={status}
           onSubmit={onAddServer}
           setServerType={setType}
@@ -101,7 +102,7 @@ export default function Home() {
               data-testid={'addServer-button'}
               className='flex items-center space-x-2 cursor-pointer rounded w-max'
             >
-              <button className='px-2 py-1 bg-primaryButton hover:bg-primaryButton/80 rounded cursor-pointer'>
+              <button className='px-2 py-1 bg-primaryBlue hover:bg-primaryBlue/80 rounded cursor-pointer'>
                 <p className='text-sm text-primary'>+ add</p>
               </button>
             </div>
