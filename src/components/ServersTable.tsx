@@ -44,9 +44,9 @@ function ServersTable({ data, columns }: ISortableTableProps) {
 
               <span className='flex items-center'>
                 {sortConfig.direction === 'asc' ? (
-                  <ChevronUp size={15} />
+                  <ChevronUp size={15} className='cursor-pointer' />
                 ) : (
-                  <ChevronDown size={15} />
+                  <ChevronDown size={15} className='cursor-pointer' />
                 )}
               </span>
             </tr>

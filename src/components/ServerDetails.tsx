@@ -26,18 +26,26 @@ export default function ServerDetails() {
       {loadingServerDetails ? (
         <Spinner />
       ) : (
-        <div className='flex space-x-80 w-max rounded-sm p-2 mt-4'>
-          <div className='flex-col items-center text-start'>
-            <p className='text-zinc-500 text-sm'>Type</p>
-            <p className='text-white'>
-              {serverDetails && serverDetails[0]?.type}
-            </p>
-          </div>
-          <div className='flex-col items-center'>
-            <p className='text-zinc-500 text-sm text-start'>Status</p>
-            <p className='text-white'>
-              {serverDetails && serverDetails[0]?.status}
-            </p>
+        <div>
+          <p className='text-white text-base mt-4 font-bold'>
+            The server {serverDetails && serverDetails[0]?.name} is currently{' '}
+            {serverDetails && serverDetails[0]?.status}
+          </p>
+          <p className='text-white text-sm mt-4'>See more details below</p>
+
+          <div className='flex justify-center space-x-10 mt-10'>
+            <div className='flex-col items-center'>
+              <p className='text-zinc-500 text-sm'>Type</p>
+              <p className='text-white'>
+                {serverDetails && serverDetails[0]?.type}
+              </p>
+            </div>
+            <div className='flex-col items-center'>
+              <p className='text-zinc-500 text-sm'>Status</p>
+              <p className='text-white'>
+                {serverDetails && serverDetails[0]?.status}
+              </p>
+            </div>
           </div>
         </div>
       )}
