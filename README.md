@@ -15,7 +15,18 @@
      ```
    - This command will start both server and client and are be accessible at a specific URL (client: `http://127.0.0.1:5173/`, server: `http://localhost:8000`).
 
-3. Run tests:
+3. Database
+
+You can connect to it using your preferred database management tool by specifying the following credentials in the env file or direclty in the `docker-compose.yml`:
+
+Host: localhost (or 127.0.0.1)
+Port: 5432
+Database: your_database_name
+Username: your_username
+Password: your_password
+Remember to replace your_username, your_password, and your_database_name with the actual values you provided in the docker-compose.yml file.
+
+4. Run tests:
    - Run the following commands to run tests:
    ```
     npm run test
@@ -35,11 +46,6 @@ So that I can easily create, list, and view server details.
 - As a user, I should be able to view detailed information about a specific server.
 - When listing servers, the system should display them in a sortable format, allowing me to reorder them by each available column in ascending or descending order.
 - While the server list is being fetched, the system should display a loading indicator to notify the user that the data is being loaded.
-
-**Additional Considerations:**
-
-- The UI should be intuitive and user-friendly, allowing users to easily navigate between different pages and perform actions without confusion.
-- Automated tests should be implemented to ensure the functionality of server creation, listing, and viewing.
 
 # API Documentation
 
@@ -87,20 +93,18 @@ Description: Fetch a list of servers.
 
 ```
 
-[
-{
-"id": "12345",
-"name": "Server 1",
-"type": "medium",
-"status": "running"
+[{
+  "id": "12345",
+  "name": "Server 1",
+  "type": "medium",
+  "status": "running"
 },
 {
-"id": "67890",
-"name": "Server 2",
-"type": "small",
-"status": "stopped"
-}
-]
+  "id": "67890",
+  "name": "Server 2",
+  "type": "small",
+  "status": "stopped"
+}]
 
 ```
 
@@ -119,10 +123,10 @@ Response:
 ```
 
 {
-"id": "12345",
-"name": "Server 1",
-"type": "medium",
-"status": "running",
+  "id": "12345",
+  "name": "Server 1",
+  "type": "medium",
+  "status": "running",
 }
 
 ```
