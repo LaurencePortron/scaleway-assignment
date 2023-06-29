@@ -52,7 +52,7 @@ describe('Page Navigation on Button Click', () => {
 });
 
 describe('useSortable', () => {
-  it('should initialize with the provided initial sort config', () => {
+  it('should initialize the table with the provided initial sort config', () => {
     const initialConfig = {
       key: 'name' as keyof IServer,
       direction: 'asc' as ISortDirection,
